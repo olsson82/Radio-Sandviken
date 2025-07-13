@@ -1,0 +1,19 @@
+Hjälp avsnitt för Ljudprocessorn.
+
+-- Installera GlassCoder --
+
+Här kan du installera GlassCoder ett program för att kunna skicka ut till ShoutCast.
+Vi har detta som ett backup program ifall Butt programmet inte skulle fungera.
+Det krävs manuell påläggning för att spara lösenord till shoutcast i programmet.
+
+-- Installera Butt --
+
+Här kan du installera Butt (Broadcast Using This Tool) som sköter referens inspelning
+samt första valet att skicka ljud till Shoutcast servern.
+Vi kommer fråga efter inloggnings uppgifter till Shoutcast servern, dessa finns i papperet
+med viktig information.
+
+-- Installera Stereo Tool --
+
+Stereo Tool är ljudprocessorn. Den sköter allt och skickar upp till skorsten. Licens lär aktiveras i
+programmet. Och eventuellt andra justeringar.

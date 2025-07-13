@@ -1,0 +1,53 @@
+Hjälp avsnitt för Studio datorn.
+
+-- Installera Pulseaudio --
+
+Pulsaudio använder vi för att dirigera ljud från exempelvis webbläsaren.
+Den används bara på Studio Datorn så den behövs inte på Master datorn & Ljudprocessor datorn.
+
+-- Installera Audacity --
+
+Audacity använder vi för inspelning i datorn.
+Här kan du installera programmet. När du gjort det så starta det
+en gång och avsluta det så programmet skapar system filer som du sen kan
+uppdatera här i installationen för att passa med vårat system.
+
+-- Installera Mixxx --
+
+Mixxx är sändnings program för dom som vill använda enbart fysiska filer och enkelt
+kunna dra och släppa från exempel hårddisk. När du installera det så starta det en gång och
+avsluta så alla system filer läggs till, så du sen kan använda Ställ in mixxx för att anpassa
+det efter hur vi ska ha det.
+
+-- Koppla nu spelas mapp --
+
+Nu spelas mappen är en mapp som behövs för att kunna visa låt titlar på RDS samt i Shoutcast.
+Mappen ligger på Nasen och i papperet med viktig information finner du alla uppgifter för det.
+Mappen innehåller en fil som låt titlar skrivs till för att kunna bli synlig på RDS.
+
+-- Installera skript för Nu Spelas --
+
+Dessa skript använder Rivendell för att kunna skicka ut låt titlar till RDS och Shoutcast.
+Dom installeras under en speciell mapp för Rivendell och i RDAdmin för denna dator kan du sedan lägga till den.
+Du kommer få ange vissa uppgifter som finns i papperet med viktig information, dessa kommer sen att finnas där,
+när du ska koppla den i Rivendell för denna dator.
+
+-- Ställ in QJackCtl --
+
+Här ställer vi in QJackCtl som är det programmet som sköter alla ljudkopplingar, med alla inställningar som vi
+behöver ha för att det ska fungera.
+
+-- Ställ in Audacity --
+
+Här ställer vi in Audacity som är inspelningsprogrammet så det det fungerar ihop med vårat system och upplägg.
+
+-- Ställ in Mixxx --
+
+Här ställer vi in Mixxx programmet som används för att köra fysiska filer för att få det att fungera ihop med
+hur vi vill ha det, samt att det ser till så låt titlar också publiceras. Bör köras före koppla autostart då
+den skapar fil som behövs vid kopplingen av autostart.
+
+-- Koppla Autostart --
+
+Här ställer vi in autostarten som kommer öppna dom program som ska öppnas vid inloggning och i respektive ordning.
+Se till så du ställt in Mixxx programmet först.

@@ -1,0 +1,9 @@
+Hjälp avsnitt för Klock Dator.
+
+-- Installera OnAirScreen --
+
+Detta program används i studion och kontrollrummet för att visa tid.
+
+-- Lägg till uppstarts program --
+
+Lägger till dom nödvändiga programmen som behövs vid uppstart.

@@ -1,0 +1,65 @@
+Hjälp avsnitt för Huvudmenyn.
+
+-- Installera VNC --
+
+Här kan du installera programvaran VNC som används för fjärråtkomst på det lokala nätverket.
+Den bör installeras på samtliga datorer.
+
+-- Installera Rivendell --
+
+Rivendell används på Master Datorn och i Studio Datorerna.
+Och den installerar du här, du kommer att bli frågad om olika
+uppgifter under installationen, samt att du kommer att behöva logga
+in med sudo.
+
+Om du inte är med i sudo gruppen på datorn, så under Mera Saker kan du
+lägga till dig där.
+
+All information som du behöver ange finns i papperet med viktig information.
+
+Denna installation kan ta en stund så du är medveten om det.
+
+-- Installera Jack Audio --
+
+Jack Audio använder vi på samtliga datorer och hjälper till att styra ljudet dit vi
+vill att det ska styras.
+
+Denna installation kommer även installera en mjukvara som heter QJackCtl som används
+för att smidigt styra ljud kopplingar. Men lugn, Under Mera Saker och respektive maskin
+så finns det inställningar som ställer in allt sånt åt dig.
+
+-- Installera Jack Mixer --
+
+Jack Mixer är en mjukvara där du kan justera ljudet med. Den används på Master datorn
+samt i Ljudprocessor datorn.
+Studio Datorerna använder den inte, men det gör inget om du installerar den där heller.
+
+-- Installera SonoBus --
+
+SonoBus är ett program för att sända ljud över internet med minimal fördröjning. Det är helt
+gratis och finns som appar till telefon dessutom. Lämpligt att installera i studion.
+
+-- Uppdatera Rivendell --
+
+Hit går du om du behöver uppdatera Rivendell, processen sköts av sig själv. Det enda du behöver göra
+är att logga in som sudo när den talar om det för dig.
+
+Den kommer även informera om det finns någon ny version eller inte.
+
+-- Skapa Ljudkort Script --
+
+Ljudkort skript används av Master datorn samt Studio Datorerna. Det är för att tala om vilka ljudkort som ska
+användas.
+
+Den kommer fråga efter hur många ljudkort du ska lägga till, det är 1 ljudkort du ska lägga till och vad dom heter för
+respektive maskin kan du se i papperet med viktig information eller avläsa i datorn genom:
+
+cat /proc/asound/cards i terminalen. 
+
+Du får en lista på ljudkorten.
+Du behöver namnet som står inom []. 
+Som exempel 0 [CODEC så namnet är CODEC
+
+-- Mera Saker --
+
+Här under finner du mer inställningar och hittar specifika för maskinerna vi har.

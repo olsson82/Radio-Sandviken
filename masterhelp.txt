@@ -1,0 +1,53 @@
+Hjälp avsnitt för Master datorn.
+
+-- Skapa auto logg generator --
+
+Auto logg generator skapar automatiskt logg för nästkommande dag klockan 04 på morgonen.
+Denna är viktig för att Rivendell på Master datorn ska rulla på helt automatiskt.
+Den kommer att skapa ett skript i Systemet mappen på datorn, och lägga in det att
+köras varje morgon klockan 04:00 i någon som heter Crontab.
+
+Du kommer få ange service namnet som används på master datorn, det vi har som standard
+är Master, men det står även i papperet med viktig information.
+
+-- Installera återställnings skript --
+
+Detta skript hjälper till att starta upp allt som behöver startas, och den bör startas vid inloggning
+som sista steget. Den övervakar även Rivendell så ifall det skulle hända något, så det blir tyst, så kommer den
+automatiskt att stänga ner allt och starta om.
+
+-- Installera Jack Mixer faders --
+
+Jack mixer används på Master datorn för att justera ljudet. Denna fil kommer att skapas i Systemet mappen och
+innehåller volym mixarna som behövs. När Jack Mixer startas så startar man med denna filen för korrekt uppstart.
+Detta ligger i återställnings skriptet så det är inget ni behöver fundera över.
+
+-- Koppla referens mapp --
+
+Referens mappen är en mapp som behövs för att skicka låt titlar till RDS. Det är en fil där som låt titlarna skrivs till
+som sedan RDS läser av för att publicera låt titlar på radio apparater som klarar av det.
+Du behöver ange informationen till Nas servern där denna mapp finns. All den informationen finns på papperet med viktig information.
+
+-- Installera skript för Nu Spelas --
+
+Dessa skript använder Rivendell för att kunna skicka ut låt titlar till RDS och Shoutcast.
+Dom installeras under en speciell mapp för Rivendell och i RDAdmin för denna dator kan du sedan lägga till den.
+Du kommer få ange vissa uppgifter som finns i papperet med viktig information, dessa kommer sen att finnas där,
+när du ska koppla den i Rivendell för denna dator. När du lägger till den i Rivendell så är det filen pypad_bosse.py du
+ska lägga till.
+
+-- Ställ in QJackCtl --
+
+Detta ställer in QJackCtl programmet som sköter ljudkopplingar åt dig. Programmets inställnings fil kommer att anpassas
+samt att ljudkoppling.xml fil kommer att installeras i Systemet mappen.
+
+Det är viktigt att du stänger ner QJackCtl innan du kör denna guiden.
+
+-- Installera Rivendell Web Broadcast --
+
+Detta verktyg gör att man kan administrera och sköta musikdatabas m.m. via ett webb gränsnitt.
+Den ska bara vara installerad på Master Datorn.
+
+-- Lägg till uppstarts program --
+
+Här lägger vi till det som behövs för uppstart åt dig. Anpassat för just denna dator.

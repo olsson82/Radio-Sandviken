@@ -1,0 +1,39 @@
+Hjälp avsnitt för Mera Saker.
+
+-- Anslut musik server till Rivendell --
+
+Rivendell måste kopplas till vår server för fungera ihop. Det kan du göra här.
+Du kommer att få ange uppgifter som är för vår databas som står i dokumentet med
+viktig information.
+
+-- För Master Datorn --
+
+Här under hittar du specifika installationer och kopplingar som ska göras om det
+är master dator.
+
+-- För Studio Datorn --
+
+Här under hittar du specifika installationer och kopplingar som ska göras om det
+är en studio dator.
+
+-- För Ljudprocessor datorn --
+
+Här under hittar du specifika installationer och kopplingar som ska göras om det
+är en ljudprocessor dator.
+
+-- Koppla användaren till sudo gruppen. --
+
+För att kunna utföra en hel del åtgärder som en vanlig användare inte har tillgång till,
+så måste du vara med i en behörighetsgrupp som heter sudo. Här kan du lägga till användaren
+i den gruppen. Du kommer behöva logga in med root lösenordet som du hittar i dokumentet
+med viktig information.
+
+-- Aktivera Quiet Boot --
+
+Quiet Boot är en funktion som visar en fin splash screen vid uppstart av datorn, istället
+för massa rader med olika texter. Gör datorn mer stilvänlig.
+Det aktiverar du här.
+
+-- Aktivera Auto Login --
+
+Här aktiverar du så datorn loggar in sig själv vid start, så slipper ni ange användarnamn och lösenord.
