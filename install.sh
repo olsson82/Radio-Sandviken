@@ -3608,9 +3608,9 @@ EOT
                 whiptail --title "Koppla till databasen" --msgbox "Vi behöver koppla rivendell till databasen som har all information. Du kommer få fylla i uppgifter dit ni har databasen." 15 78
                 clear
                 DBIPNO=$(whiptail --title "IP Address" --inputbox "Ange ip numret till databasen" 8 40 3>&1 1>&2 2>&3)
-                DBUSER=$(whiptail --title "Username" --inputbox "Ange användarnamnet till databasen" 8 40 3>&1 1>&2 2>&3)
-                DBPASS=$(whiptail --title "Password" --passwordbox "Ange lösenord till databasen" 8 40 3>&1 1>&2 2>&3)
-                DBDATA=$(whiptail --title "Database" --inputbox "Ange databasens namn" 8 40 3>&1 1>&2 2>&3)
+                DBUSER=$(whiptail --title "Användarnamn" --inputbox "Ange användarnamnet till databasen" 8 40 3>&1 1>&2 2>&3)
+                DBPASS=$(whiptail --title "Lösenord" --passwordbox "Ange lösenord till databasen" 8 40 3>&1 1>&2 2>&3)
+                DBDATA=$(whiptail --title "Databas" --inputbox "Ange databasens namn" 8 40 3>&1 1>&2 2>&3)
                 sudo_setini '/etc/rd.conf' 'Identity' 'RnRmlOwner' $LOGINUSR
                 sudo_setini '/etc/rd.conf' 'Identity' 'RnRmlGroup' $LOGINUSR
                 sudo_setini '/etc/rd.conf' 'mySQL' 'Hostname' $DBIPNO
