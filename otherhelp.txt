@@ -21,6 +21,14 @@ Här under hittar du specifika installationer och kopplingar som ska göras om d
 Här under hittar du specifika installationer och kopplingar som ska göras om det
 är en ljudprocessor dator.
 
+-- För Klock datorn --
+
+Här finner du specifika program och inställningar för klock datorn.
+
+-- Installera Shoutcast --
+
+Här kan du installera Shoutcast servern, den bör installeras på en server dator.
+
 -- Koppla användaren till sudo gruppen. --
 
 För att kunna utföra en hel del åtgärder som en vanlig användare inte har tillgång till,
