@@ -3081,12 +3081,13 @@ EOT
                 cd /home/$LOGINUSR/Shoutcast/server
                 mkdir control
                 mkdir logs
+                pass=$(whiptail --title "Lösenord" --passwordbox "Lösenord för shoutcast" 8 40 3>&1 1>&2 2>&3)
                 adminpass=$(whiptail --title "Admin Lösenord" --passwordbox "Lösenord för administration" 8 40 3>&1 1>&2 2>&3)
                 adminpass2=$(whiptail --title "Stream admin Lösenord" --passwordbox "Lösenord för admin stream ljud" 8 40 3>&1 1>&2 2>&3)
                 adminpass3=$(whiptail --title "Stream Lösenord" --passwordbox "Lösenord för att streama ljud" 8 40 3>&1 1>&2 2>&3)
                 tee /home/$LOGINUSR/Shoutcast/server/sc_serv.conf >/dev/null <<EOT
 adminpassword=$adminpass
-password=RS899z20
+password=$pass
 portbase=4027
 publicserver=always
 requirestreamconfigs=1
