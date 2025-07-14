@@ -3075,9 +3075,9 @@ EOT
                 mkdir server
                 cd download
                 FB="http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux_x64-latest.tar.gz"
-                curl -sL --continue-at - "$FB" -o "/home/$LOGINUSR/Shoutcast/download/shoutcast.tar.xz"
-                tar -xf shoutcast.tar.xz --strip-components=1
-                rm shoutcast.tar.xz
+                curl -sL --continue-at - "$FB" -o "/home/$LOGINUSR/Shoutcast/download/shoutcast.tar.gz"
+                tar -xf shoutcast.tar.gz
+                rm shoutcast.tar.gz
                 cp /home/$LOGINUSR/Shoutcast/download/sc_serv /home/$LOGINUSR/Shoutcast/server/sc_serv
                 cd /home/$LOGINUSR/Shoutcast/server
                 mkdir control
