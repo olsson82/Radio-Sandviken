@@ -3070,6 +3070,7 @@ EOT
                     mkdir /home/$LOGINUSR/Shoutcast
                     cd /home/$LOGINUSR/Shoutcast
                 fi
+                sudo apt install curl -y
                 mkdir download
                 mkdir server
                 cd download
