@@ -3078,7 +3078,7 @@ EOT
                 curl -sL --continue-at - "$FB" -o "/home/$LOGINUSR/Shoutcast/download/shoutcast.tar.xz"
                 tar -xf shoutcast.tar.xz --strip-components=1
                 rm shoutcast.tar.xz
-                cp /home/$LOGINUSR/Shoutcast/download/sc_serv /home/$LOGINUSR/Shoutcast/server
+                cp /home/$LOGINUSR/Shoutcast/download/sc_serv /home/$LOGINUSR/Shoutcast/server/sc_serv
                 cd /home/$LOGINUSR/Shoutcast/server
                 mkdir control
                 mkdir logs
@@ -3125,7 +3125,7 @@ esac
 EOT
                 sudo chmod +x /usr/local/bin/radio
                 radio start_daemon
-                echo “radio start_daemon” >> /home/$LOGINUSR/.bashrc
+                echo "radio start_daemon" >> /home/$LOGINUSR/.bashrc
                 clear
                 whiptail --title "Installera Shoutcast" --msgbox "Shoutcast har nu installerats, och startats. Vi använder port 4027 på shoutcast." 15 78
                 installloop=0
