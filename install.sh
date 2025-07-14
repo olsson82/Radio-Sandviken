@@ -3771,7 +3771,7 @@ EOT
                 "4)" "Installera Jack Mixer" \
                 "5)" "Installera SonoBus" \
                 "6)" "Uppdatera Rivendell" \
-                "7)" "Skapa Ljudkort Script" \
+                "7)" "Skapa Ljudkort Skript" \
                 "8)" "Mera Saker" \
                 "9)" "Hjälp & Information" \
                 "10)" "Avsluta" 3>&2 2>&1 1>&3
