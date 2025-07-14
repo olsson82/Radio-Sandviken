@@ -3059,6 +3059,82 @@ EOT
 
     }
 
+    function installShoutcast {
+        if (whiptail --title "Installera Shoutcast" --yesno "Detta kommer att installera Shoutcast. Detta bör installeras på en server utan desktop gränsnitt. OK?" 12 78); then
+            clear
+            installloop=1
+            while [ "$installloop" == "1" ]; do
+                if [ -d "/home/$LOGINUSR/Shoutcast" ]; then
+                    cd /home/$LOGINUSR/Shoutcast
+                else
+                    mkdir /home/$LOGINUSR/Shoutcast
+                    cd /home/$LOGINUSR/Shoutcast
+                fi
+                mkdir download
+                mkdir server
+                cd download
+                FB="http://download.nullsoft.com/shoutcast/tools/sc_serv2_linux_x64-latest.tar.gz"
+                curl -sL --continue-at - "$FB" -o "/home/$LOGINUSR/Shoutcast/download/shoutcast.tar.xz"
+                tar -xf shoutcast.tar.xz --strip-components=1
+                rm shoutcast.tar.xz
+                cp /home/$LOGINUSR/Shoutcast/download/sc_serv /home/$LOGINUSR/Shoutcast/server
+                cd /home/$LOGINUSR/Shoutcast/server
+                mkdir control
+                mkdir logs
+                adminpass=$(whiptail --title "Admin Lösenord" --passwordbox "Lösenord för administration" 8 40 3>&1 1>&2 2>&3)
+                adminpass2=$(whiptail --title "Stream admin Lösenord" --passwordbox "Lösenord för admin stream ljud" 8 40 3>&1 1>&2 2>&3)
+                adminpass3=$(whiptail --title "Stream Lösenord" --passwordbox "Lösenord för att streama ljud" 8 40 3>&1 1>&2 2>&3)
+                tee /home/$LOGINUSR/Shoutcast/server/sc_serv.conf >/dev/null <<EOT
+adminpassword=$adminpass
+password=RS899z20
+portbase=4027
+publicserver=always
+requirestreamconfigs=1
+streamadminpassword_1=$adminpass2
+streamauthhash_1=da19936e-3305-4f38-afa2-566ff18df0f5
+streamid_1=1
+streampassword_1=$adminpass3
+streampath_1=http://localhost:4027
+logfile=logs/sc_serv.log
+w3clog=logs/sc_w3c.log
+banfile=control/sc_serv.ban
+ripfile=control/sc_serv.rip
+EOT
+
+                chmod +x sc_serv
+                sudo tee /usr/local/bin/radio >/dev/null <<EOT
+#!/bin/bash
+case \$1 in
+start)
+    cd /home/$LOGINUSR/Shoutcast/server/
+    ./sc_serv &
+    ;;
+stop)
+    killall sc_serv
+    ;;
+start_daemon)
+    cd /home/$LOGINUSR/Shoutcast/server/
+    ./sc_serv daemon
+    ;;
+*)
+    echo "Usage radio start|stop"
+    ;;
+esac
+EOT
+                sudo chmod +x /usr/local/bin/radio
+                radio start_daemon
+                echo “radio start_daemon” >> /home/$LOGINUSR/.bashrc
+                clear
+                whiptail --title "Installera Shoutcast" --msgbox "Shoutcast har nu installerats, och startats. Vi använder port 4027 på shoutcast." 15 78
+                installloop=0
+            done
+
+        else
+            clear
+        fi
+
+    }
+
     function OtherHelp {
         whiptail --textbox --scrolltext $RUNFOLDER/otherhelp.txt 20 80
     }
@@ -3066,17 +3142,18 @@ EOT
     function otherStuff {
         while true; do
             CHOICES=$(
-                whiptail --title "Välj vad du vill göra" --menu "Vad vill du göra, det finns mer under respektive dator med unika inställningar." 20 100 10 \
+                whiptail --title "Välj vad du vill göra" --menu "Vad vill du göra, det finns mer under respektive dator med unika inställningar." 20 100 11 \
                     "1)" "Anslut musik server till Rivendell" \
                     "2)" "För Master Datorn" \
                     "3)" "För Studio Datorn" \
                     "4)" "För Ljudprocessor Datorn" \
                     "5)" "För Klock Datorn" \
-                    "6)" "Koppla användaren till sudo gruppen." \
-                    "7)" "Aktivera Quiet Boot" \
-                    "8)" "Aktivera Auto Login" \
-                    "9)" "Hjälp & Information" \
-                    "10)" "Gå tillbaka" 3>&2 2>&1 1>&3
+                    "6)" "Installera Shoutcast" \
+                    "7)" "Koppla användaren till sudo gruppen." \
+                    "8)" "Aktivera Quiet Boot" \
+                    "9)" "Aktivera Auto Login" \
+                    "10)" "Hjälp & Information" \
+                    "11)" "Gå tillbaka" 3>&2 2>&1 1>&3
             )
             result=$(whoami)
             case $CHOICES in
@@ -3096,18 +3173,21 @@ EOT
                 forClockComputer
                 ;;
             "6)")
-                addtoSudo
+                installShoutcast
                 ;;
             "7)")
-                quietBoot
+                addtoSudo
                 ;;
             "8)")
-                autoLogin
+                quietBoot
                 ;;
             "9)")
-                OtherHelp
+                autoLogin
                 ;;
             "10)")
+                OtherHelp
+                ;;
+            "11)")
                 break
                 ;;
             esac
