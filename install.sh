@@ -3125,7 +3125,7 @@ esac
 EOT
                 sudo chmod +x /usr/local/bin/radio
                 radio start_daemon
-                echo "radio start_daemon" >> /home/$LOGINUSR/.bashrc
+                echo "radio start_daemon" >>/home/$LOGINUSR/.bashrc
                 clear
                 whiptail --title "Installera Shoutcast" --msgbox "Shoutcast har nu installerats, och startats. Vi använder port 4027 på shoutcast." 15 78
                 installloop=0
@@ -3569,6 +3569,7 @@ EOT
             if (whiptail --title "Master Datorn ?" --yesno "Detta ska installeras på master datorn, är detta master datorn ?" 12 78); then
                 installloop=1
                 while [ "$installloop" == "1" ]; do
+                    whiptail --title "Installera Rivendell Web" --msgbox "Vi kommer att behöva lite information av dig under installationen.\nAllt står i papperet med viktig information." 15 78
                     sudo apt install apache2 -y
                     sudo a2enmod rewrite
                     sudo tee /etc/apache2/apache2.conf >/dev/null <<EOT
@@ -3628,6 +3629,1051 @@ EOT
                     sudo tar -xf rivendellweb.tar.xz --strip-components=1
                     sudo rm rivendellweb.tar.xz
                     sudo chmod -R 777 /var/www/html/
+                    cd /var/www/html/data
+                    SERVNAME=$(whiptail --title "Service Namn" --inputbox "Ange Service Namnet för Master Datorn" 8 40 3>&1 1>&2 2>&3)
+                    RIVADD=$(whiptail --title "Webb Adress" --inputbox "Ange adressen för Rivendell Web Broadcast" 8 40 3>&1 1>&2 2>&3)
+                    RIVADMIN=$(whiptail --title "Administratör" --inputbox "Ange en Rivendell Användare som administratör" 8 40 3>&1 1>&2 2>&3)
+                    SMTPSERV=$(whiptail --title "SMTP Server" --inputbox "Ange smtp server" 8 40 3>&1 1>&2 2>&3)
+                    SMTPPORT=$(whiptail --title "SMTP Port" --inputbox "Ange smtp port" 8 40 3>&1 1>&2 2>&3)
+                    SMTPUSR=$(whiptail --title "SMTP Användarnamn" --inputbox "Ange smtp användarnamn" 8 40 3>&1 1>&2 2>&3)
+                    SMTPPASS=$(whiptail --title "SMTP Lösenord" --inputbox "Ange smtp lösenord" 8 40 3>&1 1>&2 2>&3)
+                    SMTPFROM=$(whiptail --title "E-post adress" --inputbox "Ange e-post adressen" 8 40 3>&1 1>&2 2>&3)
+                    sudo tee /var/www/html/data/settings.json >/dev/null <<EOT
+{"sysname":"Radio Sandviken","sysurl":"$RIVADD","deflang":"sv_SE","admin":{"$RIVADMIN":{"username":"$RIVADMIN","settings":"1","users":"1","message":"1","groups":"1","sched":"1","services":"1","hosts":"1","backups":"1"}},"timezone":"Europe/Stockholm","smtpserv":"$SMTPSERV","port":"$SMTPPORT","smtplogin":"1","smtpenc":"0","smtpusr":"$SMTPUSR","smtppass":"$SMTPPASS","smtpfrom":"$SMTPFROM","newsmess":"V\u00e4lkommen till Radio Sandviken och Rivendell Web Broadcast.\r\nH\u00e4r kan du sk\u00f6ta musik och spellistor (loggar) p\u00e5 ett smidigt s\u00e4tt.\r\nAll musik du vill ha in i Rivendell sk\u00f6ter du h\u00e4r ifr\u00e5n.","usereset":"1","autotrim":"-35","normalize":"-13","jsonID":"AxZQ9f3fEUkLz25131","rdairplay":{"kontrollrum":{"message":"<P><CENTER>V\u00e4lkommen till <B>Radio Sandviken</B></CENTER></P><P>Lycka till med s\u00e4ndningen. Beh\u00f6ver du ladda upp l\u00e5tar g\u00f6r du det enklast i <B>Rivendell Web Broadcast</B> l\u00e4nk finns p\u00e5 skrivbordet.</P><P>Anv\u00e4nd Frist\u00e5ende Spelare om du vill anv\u00e4nda fysiska musik filer ist\u00e4llet. <B>N\u00e4r du \u00e4r klar s\u00e5 loggar du ut ifr\u00e5n Rivendell.</B></P>"},"studio":{"message":"<P><CENTER>V\u00e4lkommen till <B>Radio Sandviken</B></CENTER></P><P>Lycka till med s\u00e4ndningen. Beh\u00f6ver du ladda upp l\u00e5tar g\u00f6r du det enklast i <B>Rivendell Web Broadcast</B> l\u00e4nk finns p\u00e5 skrivbordet.</P><P><B>N\u00e4r du \u00e4r klar s\u00e5 loggar du ut ifr\u00e5n Rivendell.</B></P>"},"master":{"message":""}},"usrsett":{"$RIVADMIN":{"rdcatch":"1"}},"closedown":"0"}
+EOT
+                    sudo tee /var/www/html/data/grids.json >/dev/null <<EOT
+{
+    "$SERVNAME": {
+        "SERVICE": "$SERVNAME",
+        "LAYOUT": {
+            "Standard": {
+                "LAYOUTNAME": "Standard",
+                "HRIDDATA": [
+                    {
+                        "HOUR": 0,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 1,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 2,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 3,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 4,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 5,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 6,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 7,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 8,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 9,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 10,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 11,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 12,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 13,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 14,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 15,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 16,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 17,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 18,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 19,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 20,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 21,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 22,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 23,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 24,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 25,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 26,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 27,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 28,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 29,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 30,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 31,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 32,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 33,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 34,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 35,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 36,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 37,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 38,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 39,
+                        "COLOR": "#aa5500",
+                        "SHOR_NAME": "104",
+                        "CLOCK_NAME": "MusikmixJingelEjtid"
+                    },
+                    {
+                        "HOUR": 40,
+                        "COLOR": "#00aa00",
+                        "SHOR_NAME": "103",
+                        "CLOCK_NAME": "MusikmixEjtid"
+                    },
+                    {
+                        "HOUR": 41,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 42,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 43,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 44,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 45,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 46,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 47,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 48,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 49,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 50,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 51,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 52,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 53,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 54,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 55,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 56,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 57,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 58,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 59,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 60,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 61,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 62,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 63,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 64,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 65,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 66,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 67,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 68,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 69,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 70,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 71,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 72,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 73,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 74,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 75,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 76,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 77,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 78,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 79,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 80,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 81,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 82,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 83,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 84,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 85,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 86,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 87,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 88,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 89,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 90,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 91,
+                        "COLOR": "#55ffff",
+                        "SHOR_NAME": "110",
+                        "CLOCK_NAME": "DansbandMusikmixJingel"
+                    },
+                    {
+                        "HOUR": 92,
+                        "COLOR": "#ffff00",
+                        "SHOR_NAME": "109",
+                        "CLOCK_NAME": "DansbandMusikmix"
+                    },
+                    {
+                        "HOUR": 93,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 94,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 95,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 96,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 97,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 98,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 99,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 100,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 101,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 102,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 103,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 104,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 105,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 106,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 107,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 108,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 109,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 110,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 111,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 112,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 113,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 114,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 115,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 116,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 117,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 118,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 119,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 120,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 121,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 122,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 123,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 124,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 125,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 126,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 127,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 128,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 129,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 130,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 131,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 132,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 133,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 134,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 135,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 136,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 137,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 138,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 139,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 140,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 141,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 142,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 143,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 144,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 145,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 146,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 147,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 148,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 149,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 150,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 151,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 152,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 153,
+                        "COLOR": "#aa5500",
+                        "SHOR_NAME": "104",
+                        "CLOCK_NAME": "MusikmixJingelEjtid"
+                    },
+                    {
+                        "HOUR": 154,
+                        "COLOR": "#00aa00",
+                        "SHOR_NAME": "103",
+                        "CLOCK_NAME": "MusikmixEjtid"
+                    },
+                    {
+                        "HOUR": 155,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 156,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 157,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 158,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 159,
+                        "COLOR": "#aa5500",
+                        "SHOR_NAME": "104",
+                        "CLOCK_NAME": "MusikmixJingelEjtid"
+                    },
+                    {
+                        "HOUR": 160,
+                        "COLOR": "#00aa00",
+                        "SHOR_NAME": "103",
+                        "CLOCK_NAME": "MusikmixEjtid"
+                    },
+                    {
+                        "HOUR": 161,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 162,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 163,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 164,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 165,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    },
+                    {
+                        "HOUR": 166,
+                        "COLOR": "#ff007f",
+                        "SHOR_NAME": "101",
+                        "CLOCK_NAME": "Musikmix"
+                    },
+                    {
+                        "HOUR": 167,
+                        "COLOR": "#005500",
+                        "SHOR_NAME": "102",
+                        "CLOCK_NAME": "MusikmixJingel"
+                    }
+                ]
+            }
+        }
+    }
+}
+EOT
+                    sudo chmod -R 777 /var/www/html/
+                    cronjob="0 9 * * * curl -s http://localhost/api/backup.php > /dev/null"
+                    (
+                        crontab -u $LOGINUSR -l
+                        echo "$cronjob"
+                    ) | crontab -u $LOGINUSR -
+                    cronjob2="* * * * * curl -s http://localhost/api/generator.php > /dev/null"
+                    (
+                        crontab -u $LOGINUSR -l
+                        echo "$cronjob2"
+                    ) | crontab -u $LOGINUSR -
                     clear
                     whiptail --title "Installera Rivendell Web" --msgbox "Installationen av Rivendell Web Broadcast är nu klar, och är redo att börja användas." 15 78
                     installloop=0
